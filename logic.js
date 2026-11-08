@@ -8,6 +8,7 @@
 // 약속: 순수 함수만 둡니다. 화면 요소, 네트워크 요청, 이 파일 밖의 변수를 쓰지 않습니다.
 //       그래야 P6 에서 브라우저 없이 node 로 돌릴 수 있습니다.
 // 커밋 메시지: p3: rows / p4: rule / p7: reasons
+
 export function toDays(daily) {
   return daily.time.map((date, i) => ({
     date,
@@ -15,4 +16,13 @@ export function toDays(daily) {
     wind: daily.wind_speed_10m_max[i],
     rain: daily.precipitation_probability_max[i],
   }));
+}
+
+export function isGoodDay(day, limits) {
+  return day.rain <= limits.rain && day.wind <= limits.wind;
+}
+
+export function summarize(days, limits) {
+  const good = days.filter((day) => isGoodDay(day, limits));
+  return `good for a run on ${good.length} of ${days.length} days`;
 }
